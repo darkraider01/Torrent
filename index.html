@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torrent Client</title>
+    <script src="yourScript.js" defer></script> <!-- Replace with your actual JS file -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        #torrentFile {
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Download Torrent</h1>
+
+    <!-- File input for choosing a torrent file -->
+    <input type="file" id="torrentFile" accept=".torrent" />
+    <button id="downloadBtn">Download Torrent</button>
+
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            const fileInput = document.getElementById('torrentFile');
+            const file = fileInput.files[0]; // Get the selected file
+
+            if (!file) {
+                alert('Please choose a torrent file first!');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('torrent', file); // Append the file to FormData
+
+            // Disable the button to prevent multiple submissions
+            this.disabled = true;
+            this.innerText = 'Uploading...';
+
+            // Ensure the correct URL for the fetch call
+            fetch('http://localhost:3000/upload', { // Ensure you're using the correct URL here
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                // Check if the response is okay (status 200-299)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Data from server:', data); // Log data from server
+                alert('Torrent download started successfully!');
+            })
+            .catch(error => {
+                console.error('Error uploading torrent:', error);
+                alert('Error uploading torrent: ' + error.message);
+            })
+            .finally(() => {
+                // Re-enable the button after the upload is complete
+                this.disabled = false;
+                this.innerText = 'Download Torrent';
+            });
+        });
+    </script>
+</body>
+</html>

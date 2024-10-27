@@ -1,0 +1,19 @@
+{
+  "name": "torrent",
+  "version": "1.0.0",
+  "description": "own torrent",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "brandybuck",
+  "license": "ISC",
+  "dependencies": {
+    "bencode": "^1.0.0",
+    "bencode-js": "^0.0.8",
+    "bn.js": "^5.2.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "multer": "^1.4.5-lts.1"
+  }
+}
